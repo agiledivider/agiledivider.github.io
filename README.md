@@ -1,1 +1,0 @@
-# cogitatio.github.io
