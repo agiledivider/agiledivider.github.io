@@ -22,11 +22,22 @@
             let vp = await miro.board.viewport.get();
             let sticker = await miro.board.widgets.create({
                 type: 'sticker',
-                text: 'D20 - ' + scale,
+                text: "D20\n" + getDieRoll(20),
                 x: vp.x +vp.width / 2,
                 y: vp.y + vp.height / 2,
-                scale: 1/scale
+                scale: 1/scale,
+                style: {
+                    textAlign: "c"
+                    textAlignVertical: "m"
+                }
+
             });
+
+
+        }
+
+        function getDieRoll(die) {
+            return Math.ceil(Math.random() * Math.floor(die))
         }
     </script>
 </head>
