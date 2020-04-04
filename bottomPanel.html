@@ -56,7 +56,22 @@ miro.onReady(() => {
 async function canvasClicked(event) {
     createCards(event.data.x, event.data.y)
     .then(resetDiceCounter)
-    .then(miro.board.ui.closeBottomPanel);
+    .then(closePanel);
+}
+
+function getDiceInfo() {
+    let diceInfo = [];
+    const dice = document.querySelectorAll('.die');
+    dice.forEach( die => {
+        for(i=0; i < parseInt(die.dataset.badge); i++) {
+            let sides = parseInt(die.dataset.diesides);
+            diceInfo.push({
+                sides: sides,
+                value: getDieRoll(sides)
+            })
+        }
+    });
+    return diceInfo;
 }
 
 function resetDiceCounter() {
@@ -64,6 +79,10 @@ function resetDiceCounter() {
     dice.forEach( (die) => {
         die.dataset.badge=0;
     })
+}
+
+async function closePanel() {
+    return miro.board.ui.closeBottomPanel();
 }
 
 function addDie(type, event) {
@@ -77,12 +96,19 @@ function addDie(type, event) {
 }
 
 async function createCards(x, y) {
+    let diceInfo = getDiceInfo();
     let scale = await miro.board.viewport.getScale();
     let vp = await miro.board.viewport.get();
     let userName = await getCurrentUserName();
+    let text = userName + "\n";
+
+    diceInfo.forEach(die => {
+        text = text + "D" + die.sides + ": " + die.value + "\n";
+    })
+
     let sticker = await miro.board.widgets.create({
         type: 'sticker',
-        text: "D20\n" + getDieRoll(20) + "\n" + userName,
+        text: text,
         x: x,
         y: y,
         scale: 1/scale,
