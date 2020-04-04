@@ -54,24 +54,9 @@ miro.onReady(() => {
 });
 
 async function canvasClicked(event) {
-    console.log(event);
-    let scale = await miro.board.viewport.getScale();
-    let vp = await miro.board.viewport.get();
-    let sticker = await miro.board.widgets.create({
-        type: 'sticker',
-        text: "D20\n" + getDieRoll(20),
-        x: event.data.x,
-        y: event.data.y,
-        scale: 1/scale,
-        style: {
-            textAlign: "c",
-            textAlignVertical: "m"
-        }
-
-    });
-
+    createCards(event.data.x, event.data.y);
     resetDiceCounter()
-
+    miro.board.ui.closeBottomPanel();
 }
 
 function resetDiceCounter() {
@@ -91,15 +76,15 @@ function addDie(type, event) {
     }
 }
 
-async function createCards() {
+async function createCards(x, y) {
     let scale = await miro.board.viewport.getScale();
     let vp = await miro.board.viewport.get();
     let userName = await getCurrentUserName();
     let sticker = await miro.board.widgets.create({
         type: 'sticker',
         text: "D20\n" + getDieRoll(20) + "\n" + userName,
-        x: vp.x +vp.width / 2,
-        y: vp.y + vp.height / 2,
+        x: x,
+        y: y,
         scale: 1/scale,
         style: {
             textAlign: "c",
