@@ -4,20 +4,72 @@
     <title></title>
     <script type="text/javascript" src="https://miro.com/app/static/sdk.1.1.js"></script>
     <link rel="stylesheet" type="text/css" href="https://miro.com/app/static/styles.1.0.css"/>
+    <style>
+    .badge {
+        position:relative;
+        display: inline-block;
+    }
+    .badge[data-badge]:after {
+        content:attr(data-badge);
+        position:absolute;
+        top:-10px;
+        right:-10px;
+        font-size:.7em;
+        background:green;
+        color:white;
+        width:18px;height:18px;
+        text-align:center;
+        line-height:18px;
+        border-radius:50%;
+        box-shadow:0 0 1px #333;
+    }
+    .badge[data-badge="0"]:after {
+      display: none;
+    }
+    </style>
 </head>
 
 <body>
-
+<br/><br/>
 <div class="scrollable-container">
-    <button id="addD20" class="add-row-button" onclick="addDie('d20')"><img src="d20.svg" alt="D20" width="48" ></button>
-    <div id="rows"></div>
+    <div id="addD20" class="badge" data-badge="10" onclick="addDie('d20', event)"><img src="d20.svg" alt="D20" width="48" ></div>
     <button id="submit" class="build-button">Build template</button>
 </div>
 
 <script>
-function addDie(type) {
 
+miro.onReady(() => {
+    miro.addListener('CANVAS_CLICKED', canvasClicked );
+});
+
+async function canvasClicked(event) {
+    console.log(event);
+    let scale = await miro.board.viewport.getScale();
+    let vp = await miro.board.viewport.get();
+    let sticker = await miro.board.widgets.create({
+        type: 'sticker',
+        text: "D20\n" + "20",
+        x: event.data.x,
+        y: event.data.y,
+        scale: 1/scale,
+        style: {
+            textAlign: "c",
+            textAlignVertical: "m"
+        }
+
+    });
 }
+
+function addDie(type, event) {
+    console.log(event);
+    const article = document.querySelector('#addD20');
+    if (event.shiftKey) {
+      article.dataset.badge = Math.max(0, parseInt(article.dataset.badge) - 1);
+    } else {
+      article.dataset.badge = 1 + parseInt(article.dataset.badge);
+    }
+}
+
 </script>
 
 </body>
