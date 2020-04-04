@@ -8,13 +8,19 @@
     .badge {
         position:relative;
         display: inline-block;
-        margin-right: 10px;
+        padding-left: 2px;
+        padding-right: 2px;
+        margin-top: 5px;
+
+    }
+    .badge img {
+        width: 35px;
     }
     .badge[data-badge]:after {
         content:attr(data-badge);
         position:absolute;
         top:0px;
-        right:-10px;
+        right:-5px;
         font-size:.7em;
         background:green;
         color:white;
@@ -32,13 +38,13 @@
 
 <body>
 <div class="scrollable-container">
-  <div id="D100" class="badge" data-badge="0" onclick="addDie('D100', event)"><img src="d100.svg" alt="D100" width="48" ></div>
-  <div id="D20" class="badge" data-badge="0" onclick="addDie('D20', event)"><img src="d20.svg" alt="D20" width="48" ></div>
-  <div id="D12" class="badge" data-badge="0" onclick="addDie('D12', event)"><img src="d12.svg" alt="D12" width="48" ></div>
-  <div id="D10" class="badge" data-badge="0" onclick="addDie('D10', event)"><img src="d10.svg" alt="D10" width="48" ></div>
-  <div id="D8" class="badge" data-badge="0" onclick="addDie('D8', event)"><img src="d8.svg" alt="D8" width="48" ></div>
-  <div id="D6" class="badge" data-badge="0" onclick="addDie('D6', event)"><img src="d6.svg" alt="D6" width="48" ></div>
-  <div id="D4" class="badge" data-badge="0" onclick="addDie('D4', event)"><img src="d4.svg" alt="D20" width="48" ></div>
+  <div id="D100" class="badge" data-badge="0" onclick="addDie('D100', event)"><img src="d100.svg" alt="D100"></div>
+  <div id="D20" class="badge" data-badge="0" onclick="addDie('D20', event)"><img src="d20.svg" alt="D20"></div>
+  <div id="D12" class="badge" data-badge="0" onclick="addDie('D12', event)"><img src="d12.svg" alt="D12"></div>
+  <div id="D10" class="badge" data-badge="0" onclick="addDie('D10', event)"><img src="d10.svg" alt="D10"></div>
+  <div id="D8" class="badge" data-badge="0" onclick="addDie('D8', event)"><img src="d8.svg" alt="D8"></div>
+  <div id="D6" class="badge" data-badge="0" onclick="addDie('D6', event)"><img src="d6.svg" alt="D6"></div>
+  <div id="D4" class="badge" data-badge="0" onclick="addDie('D4', event)"><img src="d4.svg" alt="D20"></div>
 </div>
 
 <script>
