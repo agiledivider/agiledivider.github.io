@@ -38,13 +38,13 @@
 
 <body>
 <div class="scrollable-container">
-  <div id="D100" class="badge" data-badge="0" onclick="addDie('D100', event)"><img src="d100.svg" alt="D100"></div>
-  <div id="D20" class="badge" data-badge="0" onclick="addDie('D20', event)"><img src="d20.svg" alt="D20"></div>
-  <div id="D12" class="badge" data-badge="0" onclick="addDie('D12', event)"><img src="d12.svg" alt="D12"></div>
-  <div id="D10" class="badge" data-badge="0" onclick="addDie('D10', event)"><img src="d10.svg" alt="D10"></div>
-  <div id="D8" class="badge" data-badge="0" onclick="addDie('D8', event)"><img src="d8.svg" alt="D8"></div>
-  <div id="D6" class="badge" data-badge="0" onclick="addDie('D6', event)"><img src="d6.svg" alt="D6"></div>
-  <div id="D4" class="badge" data-badge="0" onclick="addDie('D4', event)"><img src="d4.svg" alt="D20"></div>
+  <div id="D100" class="badge die" data-badge="0" data-diesides="100" onclick="addDie('D100', event)"><img src="d100.png" alt="D100"></div>
+  <div id="D20" class="badge die" data-badge="0" data-diesides="20" onclick="addDie('D20', event)"><img src="d20.png" alt="D20"></div>
+  <div id="D12" class="badge die" data-badge="0" data-diesides="12" onclick="addDie('D12', event)"><img src="d12.png" alt="D12"></div>
+  <div id="D10" class="badge die" data-badge="0" data-diesides="10" onclick="addDie('D10', event)"><img src="d10.png" alt="D10"></div>
+  <div id="D8" class="badge die" data-badge="0" data-diesides="8" onclick="addDie('D8', event)"><img src="d8.png" alt="D8"></div>
+  <div id="D6" class="badge die" data-badge="0" data-diesides="6" onclick="addDie('D6', event)"><img src="d6.png" alt="D6"></div>
+  <div id="D4" class="badge die" data-badge="0" data-diesides="4" onclick="addDie('D4', event)"><img src="d4.png" alt="D4"></div>
 </div>
 
 <script>
@@ -69,7 +69,16 @@ async function canvasClicked(event) {
         }
 
     });
-    const article = document.querySelector('#D20').dataset.badge=0;
+
+    resetDiceCounter()
+
+}
+
+function resetDiceCounter() {
+    const dice = document.querySelectorAll('.die');
+    dice.forEach( (die) => {
+        die.dataset.badge=0;
+    })
 }
 
 function addDie(type, event) {
@@ -82,12 +91,13 @@ function addDie(type, event) {
     }
 }
 
-async function createCard() {
+async function createCards() {
     let scale = await miro.board.viewport.getScale();
     let vp = await miro.board.viewport.get();
+    let userName = await getCurrentUserName();
     let sticker = await miro.board.widgets.create({
         type: 'sticker',
-        text: "D20\n" + getDieRoll(20),
+        text: "D20\n" + getDieRoll(20) + "\n" + userName,
         x: vp.x +vp.width / 2,
         y: vp.y + vp.height / 2,
         scale: 1/scale,
@@ -103,6 +113,13 @@ async function createCard() {
 
 function getDieRoll(die) {
     return Math.ceil(Math.random() * Math.floor(die))
+}
+
+async function getCurrentUserName() {
+    const userId = await miro.currentUser.getId();
+    const currentUsers = await miro.board.getOnlineUsers();
+    const currentUser = currentUsers.filter(user => user.id == userId).pop();
+    return currentUser.name;
 }
 
 </script>
