@@ -8,11 +8,12 @@
     .badge {
         position:relative;
         display: inline-block;
+        margin-right: 10px;
     }
     .badge[data-badge]:after {
         content:attr(data-badge);
         position:absolute;
-        top:-10px;
+        top:0px;
         right:-10px;
         font-size:.7em;
         background:green;
@@ -30,10 +31,14 @@
 </head>
 
 <body>
-<br/><br/>
 <div class="scrollable-container">
-    <div id="addD20" class="badge" data-badge="10" onclick="addDie('d20', event)"><img src="d20.svg" alt="D20" width="48" ></div>
-    <button id="submit" class="build-button">Build template</button>
+  <div id="D100" class="badge" data-badge="0" onclick="addDie('D100', event)"><img src="d100.svg" alt="D100" width="48" ></div>
+  <div id="D20" class="badge" data-badge="0" onclick="addDie('D20', event)"><img src="d20.svg" alt="D20" width="48" ></div>
+  <div id="D12" class="badge" data-badge="0" onclick="addDie('D12', event)"><img src="d12.svg" alt="D12" width="48" ></div>
+  <div id="D10" class="badge" data-badge="0" onclick="addDie('D10', event)"><img src="d10.svg" alt="D10" width="48" ></div>
+  <div id="D8" class="badge" data-badge="0" onclick="addDie('D8', event)"><img src="d8.svg" alt="D8" width="48" ></div>
+  <div id="D6" class="badge" data-badge="0" onclick="addDie('D6', event)"><img src="d6.svg" alt="D6" width="48" ></div>
+  <div id="D4" class="badge" data-badge="0" onclick="addDie('D4', event)"><img src="d4.svg" alt="D20" width="48" ></div>
 </div>
 
 <script>
@@ -58,11 +63,12 @@ async function canvasClicked(event) {
         }
 
     });
+    const article = document.querySelector('#D20').dataset.badge=0;
 }
 
 function addDie(type, event) {
     console.log(event);
-    const article = document.querySelector('#addD20');
+    const article = document.querySelector('#'+type);
     if (event.shiftKey) {
       article.dataset.badge = Math.max(0, parseInt(article.dataset.badge) - 1);
     } else {
