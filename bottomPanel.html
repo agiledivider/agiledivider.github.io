@@ -54,7 +54,7 @@ miro.onReady(() => {
 });
 
 async function canvasClicked(event) {
-    createCards(event.data.x, event.data.y);
+    await createCards(event.data.x, event.data.y);
     resetDiceCounter()
     miro.board.ui.closeBottomPanel();
 }
