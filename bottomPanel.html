@@ -48,7 +48,7 @@
 </div>
 
 <script>
-
+const APP_ID = '3074457347458101770';
 miro.onReady(() => {
     miro.addListener('CANVAS_CLICKED', canvasClicked );
 });
@@ -117,14 +117,21 @@ async function createCards(x, y) {
             textAlignVertical: "m"
         },
         metadata: {
-          '3074457347458101770' : {
+          APP_ID : {
             type: 'd20card'
           }
         }
 
     });
 
+    const shapes = await miro.board.widgets.get<SDK.IShapeWidget>({'type': 'sticker'})
+    const dice = shapes.filter(isDiceSticker)
+    console.log(dice);
 
+}
+
+function isDiceSticker(sticker) {
+    return sticker.metadata[APP_ID];
 }
 
 function getDieRoll(die) {
