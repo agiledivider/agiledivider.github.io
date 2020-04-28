@@ -124,7 +124,7 @@ async function createCards(x, y) {
 
     });
 
-    const shapes = await miro.board.widgets.get<SDK.IShapeWidget>({'type': 'sticker'})
+    const shapes = await miro.board.widgets.get({'type': 'sticker'})
     const dice = shapes.filter(isDiceSticker)
     console.log(dice);
 
