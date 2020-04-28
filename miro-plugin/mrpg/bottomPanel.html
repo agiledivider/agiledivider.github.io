@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <script type="text/javascript" src="https://miro.com/app/static/sdk.1.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://miro.com/app/static/styles.1.0.css"/>
+    <style>
+    .badge {
+        position:relative;
+        display: inline-block;
+        padding-left: 2px;
+        padding-right: 2px;
+        margin-top: 5px;
+
+    }
+    .badge img {
+        width: 35px;
+    }
+    .badge[data-badge]:after {
+        content:attr(data-badge);
+        position:absolute;
+        top:0px;
+        right:-5px;
+        font-size:.7em;
+        background:green;
+        color:white;
+        width:18px;height:18px;
+        text-align:center;
+        line-height:18px;
+        border-radius:50%;
+        box-shadow:0 0 1px #333;
+    }
+    .badge[data-badge="0"]:after {
+      display: none;
+    }
+    </style>
+</head>
+
+<body>
+<div class="scrollable-container">
+  <div id="D100" class="badge die" data-badge="0" data-diesides="100" onclick="addDie('D100', event)"><img src="d100.png" alt="D100"></div>
+  <div id="D20" class="badge die" data-badge="0" data-diesides="20" onclick="addDie('D20', event)"><img src="d20.png" alt="D20"></div>
+  <div id="D12" class="badge die" data-badge="0" data-diesides="12" onclick="addDie('D12', event)"><img src="d12.png" alt="D12"></div>
+  <div id="D10" class="badge die" data-badge="0" data-diesides="10" onclick="addDie('D10', event)"><img src="d10.png" alt="D10"></div>
+  <div id="D8" class="badge die" data-badge="0" data-diesides="8" onclick="addDie('D8', event)"><img src="d8.png" alt="D8"></div>
+  <div id="D6" class="badge die" data-badge="0" data-diesides="6" onclick="addDie('D6', event)"><img src="d6.png" alt="D6"></div>
+  <div id="D4" class="badge die" data-badge="0" data-diesides="4" onclick="addDie('D4', event)"><img src="d4.png" alt="D4"></div>
+</div>
+
+<script>
+const APP_ID = '3074457347458101770';
+miro.onReady(() => {
+    miro.addListener('CANVAS_CLICKED', canvasClicked );
+});
+
+async function canvasClicked(event) {
+    createCards(event.data.x, event.data.y)
+    .then(resetDiceCounter)
+    .then(closePanel);
+}
+
+function getDiceInfo() {
+    let diceInfo = [];
+    const dice = document.querySelectorAll('.die');
+    dice.forEach( die => {
+        for(i=0; i < parseInt(die.dataset.badge); i++) {
+            let sides = parseInt(die.dataset.diesides);
+            diceInfo.push({
+                sides: sides,
+                value: getDieRoll(sides)
+            })
+        }
+    });
+    return diceInfo;
+}
+
+function resetDiceCounter() {
+    const dice = document.querySelectorAll('.die');
+    dice.forEach( (die) => {
+        die.dataset.badge=0;
+    })
+}
+
+async function closePanel() {
+    return miro.board.ui.closeBottomPanel();
+}
+
+function addDie(type, event) {
+    console.log(event);
+    const article = document.querySelector('#'+type);
+    if (event.shiftKey) {
+      article.dataset.badge = Math.max(0, parseInt(article.dataset.badge) - 1);
+    } else {
+      article.dataset.badge = 1 + parseInt(article.dataset.badge);
+    }
+}
+
+async function createCards(x, y) {
+    let diceInfo = getDiceInfo();
+    let scale = await miro.board.viewport.getScale();
+    let vp = await miro.board.viewport.get();
+    let userName = await getCurrentUserName();
+    let text = userName + "\n";
+
+    diceInfo.forEach(die => {
+        text = text + "D" + die.sides + ": " + die.value + "\n";
+    })
+
+    let sticker = await miro.board.widgets.create({
+        type: 'sticker',
+        text: text,
+        x: x,
+        y: y,
+        scale: 1/scale,
+        style: {
+            textAlign: "c",
+            textAlignVertical: "m"
+        },
+        metadata: {
+          [APP_ID] : {
+            type: 'd20card'
+          }
+        }
+
+    });
+
+    const shapes = await miro.board.widgets.get({'type': 'sticker'})
+    const dice = shapes.filter(isDiceSticker)
+    console.log(dice);
+
+}
+
+function isDiceSticker(sticker) {
+    return sticker.metadata[APP_ID];
+}
+
+function getDieRoll(die) {
+    return Math.ceil(Math.random() * Math.floor(die))
+}
+
+async function getCurrentUserName() {
+    const userId = await miro.currentUser.getId();
+    const currentUsers = await miro.board.getOnlineUsers();
+    const currentUser = currentUsers.filter(user => user.id == userId).pop();
+    return currentUser.name;
+}
+
+</script>
+
+</body>
+</html>
