@@ -52,7 +52,7 @@
 
                 if (event.data.length == 1 && isCarddeck(event.data[0])) {
                     console.log("selection", event);
-                    addCard()
+                    addCard(event.data[0].id);
                     miro.board.selection.clear();
                 }
             }
@@ -62,7 +62,10 @@
             }
             miro.addListener("SELECTION_UPDATED", handleSelectionUpdate);
 
-            function addCard() {
+            async function addCard(deckId) {
+              let deck = await await miro.board.widgets.get({id: deckId});
+              deck = deck[0];
+              console.log("deck", deck);
               miro.board.widgets.create({
                 type: "image",
                 url: URL_ROOT + "cards/card001.jpg",
@@ -70,7 +73,9 @@
                   [APP_ID]: {
                     card: true
                   }
-                }
+                },
+                x: deck.x,
+                y: deck.y
               })
             }
         })
