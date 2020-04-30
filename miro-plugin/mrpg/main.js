@@ -29,6 +29,7 @@ async function activateCardDecks() {
       id: deck.id,
       metadata: {
         [APP_ID]: {
+          deck: true,
           active: true
         }
       },
