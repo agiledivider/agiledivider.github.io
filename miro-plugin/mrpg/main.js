@@ -13,10 +13,27 @@ async function placeCardDeck() {
       url: URL_ROOT + "cards/mrpg-back.jpg",
       metadata: {
         [APP_ID]: {
-          deck: true
+          deck: true,
+          active: false
         }
       },
       x: deck.x,
       y: deck.y
     })
+}
+
+async function activateCardDecks() {
+  let decks = await miro.board.widgets.get({metadata: { [APP_ID]: { deck: true}}});
+  decks.forEach((deck, i) => {
+    miro.board.widgets.update({
+      id: deck.id,
+      metadata: {
+        [APP_ID]: {
+          active: true
+        }
+      },
+      url: "https://cogitatio.github.io/miro-plugin/mrpg/cards/mrpg-back-2.jpg"
+    })
+  });
+
 }
