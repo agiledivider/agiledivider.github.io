@@ -38,3 +38,35 @@ async function activateCardDecks() {
   });
 
 }
+
+function formatCardNumber(num) {
+    var s = "00000" + num;
+    return s.substr(s.length-5);
+}
+
+async function spreadOutCards() {
+  const CARDWIDTH = 433;
+  const CARDHEIGHT = 650;
+  const CARDPADDING = 10;
+
+  const columns = Math.ceil(Math.sqrt(CARDCOUNT / 16 * 9)) * 16 );
+  const rows = Math.ceil(CARDCOUNT / columns);
+
+  for (row = 1; row <= rows; row++) {
+    for (column = 1; column <= columns; colum++) {
+      let cardNumber = ((row-1) * 16 + column);
+      if (cardNumber > CARDCOUNT) break;
+      miro.board.widgets.create({
+        type: "image",
+        url: URL_ROOT + "cards/card" + formatCardNumber(cardNumber) + ".jpg",
+        metadata: {
+          [APP_ID]: {
+            card: true
+          }
+        },
+        x: (column * CARDWIDTH + (column-1) * CARDPADDING),
+        y: (row * CARDHEIGHT + (row-1) * CARDPADDING)
+      })
+    }
+  }
+}
