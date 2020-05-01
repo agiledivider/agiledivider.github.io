@@ -49,7 +49,7 @@ async function spreadOutCards() {
   const CARDHEIGHT = 650;
   const CARDPADDING = 10;
 
-  const columns = Math.ceil(Math.sqrt(CARDCOUNT / 16 * 9)) * 16 );
+  const columns = Math.ceil(Math.sqrt(CARDCOUNT / 16 * 9) * 16 );
   const rows = Math.ceil(CARDCOUNT / columns);
 
   for (row = 1; row <= rows; row++) {
