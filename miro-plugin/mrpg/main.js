@@ -58,7 +58,7 @@ async function spreadOutCards() {
 
   for (row = 1; row <= rows; row++) {
     for (column = 1; column <= columns; column++) {
-      let cardNumber = ((row-1) * 16 + column);
+      let cardNumber = ((row-1) * columns + column);
       console.log("card", cardNumber, row, column);
       if (cardNumber > CARDCOUNT) { break; }
       miro.board.widgets.create({
