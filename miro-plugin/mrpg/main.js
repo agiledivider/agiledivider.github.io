@@ -44,6 +44,11 @@ async function getNewCard() {
   let cardsOnBoard = getCardDeckFromCardsOnBoard(cardWidgetsOnBoard);
   let standardCardDeck = createNormalizedCardDeck();
   let availableCards = diff(cardsOnBoard, standardCardDeck);
+  console.log("cardWidgetsOnBoard", cardWidgetsOnBoard);
+  console.log("cardsOnBoard", cardsOnBoard);
+  console.log("standardCardDeck", standardCardDeck);
+  console.log("availableCards", availableCards);
+
   return availableCards[Math.floor(Math.random() * availableCards.length)]
 }
 
