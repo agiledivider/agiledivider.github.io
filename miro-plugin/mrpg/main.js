@@ -39,17 +39,20 @@ async function activateCardDecks() {
 
 }
 
-async function getNewCard() {
+function getNewCard() {
   let cardWidgetsOnBoard = await collectAllCardsOnBoard();
   let cardsOnBoard = getCardDeckFromCardsOnBoard(cardWidgetsOnBoard);
   let standardCardDeck = createNormalizedCardDeck();
-  let availableCards = diff(cardsOnBoard, standardCardDeck);
+  let availableCards = await diff(cardsOnBoard, standardCardDeck);
   console.log("cardWidgetsOnBoard", cardWidgetsOnBoard);
   console.log("cardsOnBoard", cardsOnBoard);
   console.log("standardCardDeck", standardCardDeck);
   console.log("availableCards", availableCards);
-
-  return availableCards[Math.floor(Math.random() * availableCards.length)]
+  let index = Math.floor(Math.random() * availableCards.length);
+  console.log("index", index);
+  let cardName = availableCards[index];
+  console.log("cardNameintern", cardName);
+  return cardName;
 }
 
 function diff(cardsOnBoard, allCards) {
