@@ -48,6 +48,26 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function collectAllCardsOnBoard() {
+  return await miro.board.widgets.get({metadata: { [APP_ID]: { card: true}}});
+}
+
+function getCardDeckFromCardsOnBoard(cardsOnBoard) {
+  let cardDeck = []
+  cardsOnBoard.forEach(card => {
+    cardDeck.push(card.metadata[APP_ID].cardName)
+  })
+  return cardDeck;
+}
+
+function createNormalizedCardDeck() {
+  let cardDeck = [];
+  for (i=1; i <= CARDCOUNT; i++) {
+    cardDeck.push("card" + formatCardNumber(i));
+  }
+  return cardDeck;
+}
+
 async function spreadOutCards() {
   const CARDWIDTH = 433;
   const CARDHEIGHT = 650;
@@ -59,8 +79,8 @@ async function spreadOutCards() {
   for (row = 1; row <= rows; row++) {
     for (column = 1; column <= columns; column++) {
       let cardNumber = ((row-1) * columns + column);
-      console.log("card", cardNumber, row, column);
       if (cardNumber > CARDCOUNT) { break; }
+      console.log("card", cardNumber, row, column);
       miro.board.widgets.create({
         type: "image",
         url: URL_ROOT + "cards/card" + formatCardNumber(cardNumber) + ".jpg",
