@@ -39,7 +39,7 @@ async function activateCardDecks() {
 
 }
 
-function getNewCard() {
+async function getNewCard() {
   let cardWidgetsOnBoard = await collectAllCardsOnBoard();
   let cardsOnBoard = getCardDeckFromCardsOnBoard(cardWidgetsOnBoard);
   let standardCardDeck = createNormalizedCardDeck();
