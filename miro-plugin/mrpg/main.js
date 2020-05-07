@@ -39,6 +39,20 @@ async function activateCardDecks() {
 
 }
 
+async function getNewCard() {
+  let cardWidgetsOnBoard = await collectAllCardsOnBoard();
+  let cardsOnBoard = getCardDeckFromCardsOnBoard(cardWidgetsOnBoard);
+  let standardCardDeck = createNormalizedCardDeck();
+  let availableCards = diff(cardsOnBoard, standardCardDeck);
+  return availableCards[Math.floor(Math.random() * availableCards.length)]
+}
+
+function diff(cardsOnBoard, allCards) {
+  let bardsOnBoard = cardsOnBoard.filter(x => x !== undefined);
+  return allCards.filter(x => !cardsOnBoard.includes(x));
+
+}
+
 function formatCardNumber(num) {
     var s = "00000" + num;
     return s.substr(s.length-5);
