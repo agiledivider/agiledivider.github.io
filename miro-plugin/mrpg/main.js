@@ -108,7 +108,8 @@ async function spreadOutCards() {
         url: URL_ROOT + "cards/card" + formatCardNumber(cardNumber) + ".jpg",
         metadata: {
           [APP_ID]: {
-            card: true
+            card: true,
+            cardName: "card" + formatCardNumber(cardNumber)
           }
         },
         x: (column * CARDWIDTH + (column-1) * CARDPADDING),
