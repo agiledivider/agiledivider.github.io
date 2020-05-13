@@ -3,7 +3,6 @@
 <head>
     <title></title>
     <script type="text/javascript" src="https://miro.com/app/static/sdk.1.1.js"></script>
-    <script type="text/javascript" src="main.js"></script>
     <link rel="stylesheet" type="text/css" href="https://miro.com/app/static/styles.1.0.css"/>
     <style>
     .badge {
@@ -50,14 +49,16 @@
 
 <script>
 const APP_ID = '3074457347458101770';
+const URL_ROOT = 'https://cogitatio.github.io/';
+
 miro.onReady(() => {
     miro.addListener('CANVAS_CLICKED', canvasClicked );
 });
 
 async function canvasClicked(event) {
-    createCards(event.data.x, event.data.y)
+    createDice(event.data.x, event.data.y)
     .then(resetDiceCounter)
-    .then(closePanel);
+    //.then(closePanel);
 }
 
 function getDiceInfo() {
@@ -96,6 +97,53 @@ function addDie(type, event) {
     }
 }
 
+async function createDice(x,y) {
+    let diceInfo = getDiceInfo();
+    let scale = await miro.board.viewport.getScale();
+    let vp = await miro.board.viewport.get();
+    let userName = await getCurrentUserName();
+    let text = userName + "\n";
+
+    diceInfo.forEach(die => {
+        text = text + "D" + die.sides + ": " + die.value + "\n";
+    })
+
+    let sticker = await miro.board.widgets.create({
+        type: 'sticker',
+        text: text,
+        x: x,
+        y: y,
+        scale: 1/scale,
+        style: {
+            textAlign: "c",
+            textAlignVertical: "m"
+        },
+        metadata: {
+          [APP_ID] : {
+            type: 'd20card'
+          }
+        }
+
+    });
+}
+
+async function createDie(x,y,sides,value,rollId) {
+    miro.board.widgets.create({
+        type: "image",
+        url: URL_ROOT + "dice/d"+sides+".png",
+        metadata: {
+          [APP_ID]: {
+            sides: sides,
+            value: value,
+            rollId: rollId
+          }
+        },
+        x: x,
+        y: y
+    })
+    
+}
+
 async function createCards(x, y) {
     let diceInfo = getDiceInfo();
     let scale = await miro.board.viewport.getScale();
@@ -125,7 +173,7 @@ async function createCards(x, y) {
 
     });
 
-    const shapes = await miro.board.widgets.get({'type': 'sticker'})
+    const shapes = await miro.board.widgets.get<SDK.IShapeWidget>({'type': 'sticker'})
     const dice = shapes.filter(isDiceSticker)
     console.log(dice);
 
