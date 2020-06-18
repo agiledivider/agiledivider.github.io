@@ -33,7 +33,7 @@ async function activateCardDecks() {
           active: true
         }
       },
-      url: "https://cogitatio.github.io/miro-plugin/mrpg/cards/mrpg-back-2.jpg"
+      url: "https://agiledivider.github.io/miro-plugin/mrpg/cards/mrpg-back-2.jpg"
     })
   });
 
