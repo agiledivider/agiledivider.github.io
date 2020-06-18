@@ -1,5 +1,5 @@
 const APP_ID = '3074457347777696602';
-const URL_ROOT = 'https://cogitatio.github.io/miro-plugin/mrpg/';
+const URL_ROOT = 'https://agiledivider.github.io/miro-plugin/mrpg/';
 const CARDCOUNT = 524;
 
 async function placeCardDeck() {
