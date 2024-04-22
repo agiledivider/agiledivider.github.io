@@ -75,7 +75,7 @@
           return widget.metadata[APP_ID] && widget.metadata[APP_ID].deck
         }
 
-        miro.v1.addListener('SELECTION_UPDATED', handleSelectionUpdate)
+        miro.addListener('SELECTION_UPDATED', handleSelectionUpdate)
 
         function getRandomCardNumber () {
           num = Math.ceil(Math.random() * CARDCOUNT)
