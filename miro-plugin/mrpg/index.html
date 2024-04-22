@@ -43,14 +43,15 @@
             })
 
             async function openBottomPanel() {
-              const authorized = await miro.isAuthorized()
-              if (authorized) {
+              const isAuthorized = await miro.isAuthorized()
+              if (isAuthorized) {
                   miro.board.ui.openBottomPanel("mrpg/bottomPanel.html", {width: 320, height: 60});
               } else {
-                  miro.board.ui.openModal('mrpg/not-authorized.html')
-                  .then(res => {
+                if (!isAuthorized) {
+                    miro.requestAuthorization()
+                    .then(res => {
                       if (res === 'success') {
-                           miro.board.ui.openBottomPanel("mrpg/bottomPanel.html", {width: 320, height: 60});
+                        miro.board.ui.openBottomPanel("mrpg/bottomPanel.html", {width: 320, height: 60});
                       }
                   })
               }
