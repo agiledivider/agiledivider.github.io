@@ -1,6 +1,6 @@
 const APP_ID = '3074457347777696602';
 const URL_ROOT = 'https://agiledivider.github.io/miro-plugin/mrpg/';
-const CARDCOUNT = 524;
+const CARDCOUNT = 558;
 
 async function placeCardDeck() {
     vp = await miro.board.viewport.get();
